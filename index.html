@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Earth: Field Reports</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="aurora aurora-a"></div>
+    <div class="aurora aurora-b"></div>
+    <div class="particles" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <div id="introScreen" class="intro-screen">
+      <div class="intro-card panel">
+        <p class="eyebrow">Welcome to Project Earth</p>
+        <h1>Field Reports</h1>
+        <p class="subtitle">
+          Solve simple environmental mysteries by reading clues, spotting
+          human and natural causes, and learning how communities can prevent
+          future damage.
+        </p>
+
+        <div class="intro-grid">
+          <div class="intro-step">
+            <strong>1. Read the case</strong>
+            <p>Each case explains a real-world environmental problem in plain language.</p>
+          </div>
+          <div class="intro-step">
+            <strong>2. Gather clues</strong>
+            <p>Play a quick mini-game for each clue to uncover what happened and what caused it.</p>
+          </div>
+          <div class="intro-step">
+            <strong>3. Choose the cause</strong>
+            <p>Select the explanation that best matches the evidence you found.</p>
+          </div>
+          <div class="intro-step">
+            <strong>4. Learn prevention</strong>
+            <p>Every solved case teaches how people can reduce harm in the future.</p>
+          </div>
+        </div>
+
+        <div class="intro-note">
+          On the right side of the game, a live happenings panel updates as the
+          situation unfolds so players can follow the story in real time.
+        </div>
+
+        <button id="startGameBtn" class="primary-button" type="button">
+          Start Investigation
+        </button>
+      </div>
+    </div>
+
+    <div class="app-shell">
+      <aside class="sidebar panel">
+        <div data-tour-anchor="sidebarIntro">
+          <p class="eyebrow">Scientific Mystery Lab</p>
+          <h1>Project Earth</h1>
+          <p class="subtitle">
+            Investigate environmental anomalies using evidence, reasoning, and
+            AI-assisted hypothesis testing.
+          </p>
+        </div>
+
+        <section class="status-stack">
+          <div class="stat-card">
+            <span>Reputation</span>
+            <strong id="reputationValue">84</strong>
+          </div>
+          <div class="stat-card">
+            <span>Research Budget</span>
+            <strong id="budgetValue">120</strong>
+          </div>
+          <div class="stat-card">
+            <span>Breakthrough Meter</span>
+            <strong id="breakthroughValue">18%</strong>
+          </div>
+        </section>
+
+        <section data-tour-anchor="caseList">
+          <div class="section-heading">
+            <h2>Cases</h2>
+            <span id="caseProgress">1 / 10</span>
+          </div>
+          <div id="caseList" class="case-list"></div>
+        </section>
+
+        <section class="assistant-card" data-tour-anchor="assistantCard">
+          <div class="assistant-header">
+            <span class="assistant-dot"></span>
+            <div>
+              <p class="eyebrow">AI Science Assistant</p>
+              <h3>Dr. Mira Sen</h3>
+            </div>
+          </div>
+          <p id="assistantInsight" class="assistant-text"></p>
+          <button id="requestHintBtn" class="ghost-button" type="button">
+            Request Hypothesis
+          </button>
+        </section>
+      </aside>
+
+      <main class="main-stage">
+        <header class="hero panel" data-tour-anchor="heroPanel">
+          <div>
+            <p class="eyebrow" id="caseRegion">Northern Wetlands Sector</p>
+            <h2 id="caseTitle">Silent Lake</h2>
+            <p id="caseSummary" class="hero-copy"></p>
+          </div>
+          <div class="hero-actions">
+            <button id="simulateLiveBtn" class="primary-button" type="button">
+              Refresh Live Data
+            </button>
+            <button id="advanceCaseBtn" class="ghost-button" type="button">
+              Next Case
+            </button>
+          </div>
+        </header>
+
+        <section class="live-strip panel" data-tour-anchor="livePanel">
+          <div class="section-heading">
+            <h3>Live Happenings</h3>
+            <span>What people are seeing right now</span>
+          </div>
+          <div class="ticker-shell">
+            <div id="liveMarquee" class="live-marquee"></div>
+          </div>
+          <div id="liveTicker" class="live-ticker"></div>
+        </section>
+
+        <section class="dashboard-grid">
+          <article class="panel scene-panel">
+            <div class="section-heading">
+              <h3>Satellite & Terrain View</h3>
+              <span id="twistBadge" class="badge">Stable Conditions</span>
+            </div>
+            <div class="scene-display">
+              <div class="scene-overlay scene-overlay-1"></div>
+              <div class="scene-overlay scene-overlay-2"></div>
+              <div class="scene-grid"></div>
+              <div class="scene-hotspot hotspot-a"></div>
+              <div class="scene-hotspot hotspot-b"></div>
+              <div class="scene-hotspot hotspot-c"></div>
+              <div class="scene-label label-a" id="sceneLabelA"></div>
+              <div class="scene-label label-b" id="sceneLabelB"></div>
+              <div class="scene-label label-c" id="sceneLabelC"></div>
+            </div>
+            <div class="signal-row" id="signalRow"></div>
+          </article>
+
+          <article class="panel chart-panel" data-tour-anchor="telemetryPanel">
+            <div class="section-heading">
+              <h3>Environmental Telemetry</h3>
+              <span id="telemetryMode">Live API Data</span>
+            </div>
+            <canvas id="telemetryChart" width="640" height="320"></canvas>
+            <div class="metric-grid" id="metricGrid"></div>
+          </article>
+
+          <article class="panel evidence-panel" data-tour-anchor="evidencePanel">
+            <div class="section-heading">
+              <h3>Evidence Board</h3>
+              <span id="evidenceCount">0 clues logged</span>
+            </div>
+            <div class="evidence-guidance">
+              <p id="evidenceHelp" class="evidence-help">
+                Pick a clue to play its mini-game. If a clue is unavailable, the game will explain why.
+              </p>
+              <button id="fundResearchBtn" class="ghost-button" type="button">
+                Replenish Budget
+              </button>
+            </div>
+            <div id="evidenceOptions" class="evidence-options"></div>
+          </article>
+
+          <article class="panel dossier-panel" data-tour-anchor="dossierPanel">
+            <div class="section-heading">
+              <h3>Case Dossier</h3>
+              <span id="dossierStatus">Awaiting review</span>
+            </div>
+            <div id="dossierFeed" class="dossier-feed"></div>
+          </article>
+
+          <article class="panel theory-panel" data-tour-anchor="theoryPanel">
+            <div class="section-heading">
+              <h3>Pick the Cause</h3>
+              <span>Choose the best explanation</span>
+            </div>
+            <div id="suspectList" class="suspect-list"></div>
+            <button id="testTheoryBtn" class="primary-button wide" type="button">
+              Check My Answer
+            </button>
+            <div id="theoryFeedback" class="theory-feedback"></div>
+          </article>
+
+          <article class="panel report-panel" data-tour-anchor="reportPanel">
+            <div class="section-heading">
+              <h3>Prevention Guide</h3>
+              <span>What can stop this in the future?</span>
+            </div>
+            <div id="reportCards" class="report-cards"></div>
+            <div class="api-note">
+              Live charts use real internet data so players connect each mystery
+              to actual environmental conditions.
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <template id="caseButtonTemplate">
+      <button class="case-button" type="button">
+        <span class="case-button-title"></span>
+        <span class="case-button-meta"></span>
+      </button>
+    </template>
+
+    <template id="evidenceCardTemplate">
+      <button class="evidence-card" type="button">
+        <div class="evidence-card-top">
+          <span class="evidence-type"></span>
+          <span class="evidence-cost"></span>
+        </div>
+        <strong class="evidence-title"></strong>
+        <p class="evidence-description"></p>
+      </button>
+    </template>
+
+    <div id="tourOverlay" class="tour-overlay hidden" aria-hidden="true">
+      <div id="tourSpotlight" class="tour-spotlight"></div>
+      <div id="tourCard" class="tour-card panel" role="dialog" aria-live="polite">
+        <div class="tour-progress-row">
+          <span id="tourProgress" class="tour-progress"></span>
+          <button id="tourSkipBtn" class="tour-skip" type="button">Skip</button>
+        </div>
+        <h3 id="tourTitle"></h3>
+        <p id="tourBody" class="tour-body"></p>
+        <div class="tour-actions">
+          <button id="tourBackBtn" class="ghost-button" type="button">Back</button>
+          <button id="tourNextBtn" class="primary-button" type="button">Next</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="miniGameOverlay" class="mini-game-overlay hidden" aria-hidden="true">
+      <div class="mini-game-shell panel">
+        <div class="mini-game-header">
+          <div>
+            <p id="miniGameEyebrow" class="eyebrow">Clue Challenge</p>
+            <h3 id="miniGameTitle">Mini Game</h3>
+          </div>
+          <button id="miniGameCloseBtn" class="tour-skip" type="button">Close</button>
+        </div>
+        <p id="miniGamePrompt" class="mini-game-prompt"></p>
+        <div id="miniGameStage" class="mini-game-stage"></div>
+        <div class="mini-game-footer">
+          <p id="miniGameStatus" class="mini-game-status">Complete the challenge to unlock the clue.</p>
+          <button id="miniGameActionBtn" class="primary-button hidden" type="button">Continue</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
